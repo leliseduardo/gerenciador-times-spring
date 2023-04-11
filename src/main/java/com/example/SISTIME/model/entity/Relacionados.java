@@ -12,12 +12,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class EquipeAdversaria {
+public class Relacionados {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private String nome;
-    private String photoPath;
+    private boolean titular;
+    private String saiu;
+    private String entrou;
+
 }
