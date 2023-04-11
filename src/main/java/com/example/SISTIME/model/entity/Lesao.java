@@ -23,7 +23,7 @@ public class Lesao {
 
     private String nome;
     private String gravidade;
-    private String tratamentoIndicado;
-    private LocalDate inicio;
-    private LocalDate fim;
+    private String local;
+    private String tipo;
+    private long TempoMedioDeTratamento;
 }
