@@ -29,5 +29,5 @@ public class Partida {
     @ManyToOne
     private TimeAdversario timeAdversario;
     @ManyToOne
-    private Tecnico tecnico
+    private Tecnico tecnico;
 }
