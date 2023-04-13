@@ -1,6 +1,7 @@
 package com.example.SISTIME.model.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,12 +23,16 @@ public class Partida {
     private LocalDateTime hora;
     private String placar;
 
+    @NotNull
     @ManyToOne
     private Campeonato campeonato;
+    @NotNull
     @ManyToOne
     private Estadio estadio;
+    @NotNull
     @ManyToOne
     private TimeAdversario timeAdversario;
+    @NotNull
     @ManyToOne
     private Tecnico tecnico;
 }
