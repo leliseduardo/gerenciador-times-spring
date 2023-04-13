@@ -27,12 +27,12 @@ public class Estadio {
     @NotNull
     @Min(1)
     private int numero;
-    @NotNull
+    @NotBlank
     private String bairro;
-    @NotNull
+    @NotBlank
     private String cep;
-    @NotNull
+    @NotBlank
     private String cidade;
-    @NotNull
+    @NotBlank
     private String uf;
 }

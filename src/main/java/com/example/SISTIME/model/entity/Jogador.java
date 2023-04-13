@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Jogador extends Pessoa{
 
+
     private String nacionalidade;
     private float altura;
     private float peso;
