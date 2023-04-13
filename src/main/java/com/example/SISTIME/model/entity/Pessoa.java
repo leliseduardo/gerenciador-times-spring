@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -35,8 +36,7 @@ public class Pessoa {
     private String telefone;
     @NotBlank
     private String logradouro;
-    @NotNull
-    @Min(1)
+    @PositiveOrZero
     private Integer numero;
     @NotBlank
     private String complemento;
