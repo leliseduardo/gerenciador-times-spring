@@ -1,6 +1,7 @@
 package com.example.SISTIME.model.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,8 +16,10 @@ public class PosicaoJogador {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @NotNull
     @ManyToOne
     private Jogador jogador;
+    @NotNull
     @ManyToOne
     private Posicao posicao;
 }
