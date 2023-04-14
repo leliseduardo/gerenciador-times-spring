@@ -36,8 +36,8 @@ public class Pessoa {
     private String telefone;
     @NotBlank
     private String logradouro;
-    @PositiveOrZero
-    private Integer numero;
+    @NotBlank
+    private String numero;
     @NotBlank
     private String complemento;
     @NotBlank
@@ -45,7 +45,9 @@ public class Pessoa {
     @NotBlank
     private String cidade;
     @NotBlank
-    private String uf;
+    private String estado;
+    @NotBlank
+    private String pais;
     @NotBlank
     private String cep;
 }

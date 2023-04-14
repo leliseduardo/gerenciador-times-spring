@@ -23,8 +23,8 @@ public class Estadio {
     private String nome;
     @NotBlank
     private String logradouro;
-    @PositiveOrZero
-    private int numero;
+    @NotBlank
+    private String numero;
     @NotBlank
     private String bairro;
     @NotBlank
@@ -32,5 +32,5 @@ public class Estadio {
     @NotBlank
     private String cidade;
     @NotBlank
-    private String uf;
+    private String estado;
 }

@@ -14,7 +14,7 @@ public class EstadioDto {
     private long id;
     private String nome;
     private String logradouro;
-    private int numero;
+    private String numero;
     private String bairro;
     private String cep;
     private String cidade;
@@ -22,6 +22,6 @@ public class EstadioDto {
 
     public static EstadioDto create(Estadio estadio){
         ModelMapper modelMapper = new ModelMapper();
-        return modelMapper.map(estadio, EstadioDto.class)
+        return modelMapper.map(estadio, EstadioDto.class);
     }
 }
