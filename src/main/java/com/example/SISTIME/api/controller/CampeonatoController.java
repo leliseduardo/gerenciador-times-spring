@@ -26,6 +26,7 @@ public class CampeonatoController {
     public ResponseEntity get() {
         List<Campeonato> campeonatos = service.getCampeonato();
         return ResponseEntity.ok(campeonatos.stream().map(c -> CampeonatoDto.create(c)).collect(Collectors.toList()));
+        //return ResponseEntity.ok(campeonatos.stream().map(CampeonatoDto::create).collect(Collectors.toList()));
     }
 
     @GetMapping("/{id}")
@@ -38,6 +39,7 @@ public class CampeonatoController {
         }
 
         return ResponseEntity.ok(campeonato.map(c -> CampeonatoDto.create(c)));
+        //return ResponseEntity.ok(campeonato.map(CampeonatoDto::create);
     }
 }
 
