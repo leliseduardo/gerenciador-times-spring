@@ -12,7 +12,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Service
-public class CampeonateService {
+public class CampeonatoService {
 
     @Autowired
     private CampeonatoRepository repository;
