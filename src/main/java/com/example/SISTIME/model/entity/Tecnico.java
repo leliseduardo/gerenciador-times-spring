@@ -16,6 +16,5 @@ public class Tecnico extends Pessoa{
 
     @NotNull
     private LocalDate dataContratacao;
-    @NotNull
     private LocalDate dataDemissao;
 }
