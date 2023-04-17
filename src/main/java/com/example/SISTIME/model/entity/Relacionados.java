@@ -1,6 +1,7 @@
 package com.example.SISTIME.model.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,8 +17,11 @@ public class Relacionados {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @NotNull
     private boolean titular;
+    @NotBlank
     private String saiu;
+    @NotBlank
     private String entrou;
 
     @NotNull
