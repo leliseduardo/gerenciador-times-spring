@@ -1,6 +1,7 @@
 package com.example.SISTIME.model.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,10 +20,12 @@ public class Partida {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @NotNull
     private LocalDate data;
+    @NotNull
     private LocalDateTime hora;
+    @NotBlank
     private String placar;
-
     @NotNull
     @ManyToOne
     private Campeonato campeonato;
