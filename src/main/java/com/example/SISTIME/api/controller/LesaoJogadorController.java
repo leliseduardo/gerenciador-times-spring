@@ -1,16 +1,14 @@
 package com.example.SISTIME.api.controller;
 
 import com.example.SISTIME.api.dto.LesaoJogadorDto;
-import com.example.SISTIME.model.entity.Lesao;
+import com.example.SISTIME.exception.RegraNegocioException;
 import com.example.SISTIME.model.entity.LesaoJogador;
 import com.example.SISTIME.service.LesaoJogadorService;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -38,6 +36,23 @@ public class LesaoJogadorController {
         }
 
         return ResponseEntity.ok(lesaoJogador.map(LesaoJogadorDto::create));
+    }
+
+    @PostMapping()
+    public ResponseEntity post(@RequestBody LesaoJogadorDto dto){
+        try {
+            LesaoJogador lesaoJogador = converter(dto);
+            lesaoJogador = service.create(lesaoJogador);
+            return new ResponseEntity(lesaoJogador, HttpStatus.CREATED);
+        }catch (RegraNegocioException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    private LesaoJogador converter(LesaoJogadorDto dto){
+        ModelMapper modelMapper = new ModelMapper();
+        LesaoJogador lesaoJogador = modelMapper.map(dto, LesaoJogador.class);
+        return lesaoJogador;
     }
 }
 
