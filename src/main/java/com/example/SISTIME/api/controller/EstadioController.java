@@ -4,6 +4,7 @@ import com.example.SISTIME.api.dto.EstadioDto;
 import com.example.SISTIME.model.entity.Estadio;
 import com.example.SISTIME.service.EstadioService;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,6 +41,10 @@ public class EstadioController {
 
         return ResponseEntity.ok(estadio.map(EstadioDto::create));
         //return ResponseEntity.ok(estadio.map(c -> EstadioDto.create(c)));
+    }
+
+    private Estadio converter(EstadioDto dto){
+        
     }
 }
 

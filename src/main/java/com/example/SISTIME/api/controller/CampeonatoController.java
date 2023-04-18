@@ -1,15 +1,14 @@
 package com.example.SISTIME.api.controller;
 
 import com.example.SISTIME.api.dto.CampeonatoDto;
+import com.example.SISTIME.exception.RegraNegocioException;
 import com.example.SISTIME.model.entity.Campeonato;
 import com.example.SISTIME.service.CampeonatoService;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -41,7 +40,45 @@ public class CampeonatoController {
         return ResponseEntity.ok(campeonato.map(c -> CampeonatoDto.create(c)));
         //return ResponseEntity.ok(campeonato.map(CampeonatoDto::create);
     }
+
+    @PostMapping()
+    public ResponseEntity post(@RequestBody CampeonatoDto dto){
+        try{
+            Campeonato campeonato = converter(dto);
+            campeonato = service.create(campeonato);
+            return new ResponseEntity(campeonato, HttpStatus.CREATED);
+        }catch (RegraNegocioException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    private Campeonato converter(CampeonatoDto dto){
+        ModelMapper modelMapper = new ModelMapper();
+        Campeonato campeonato = modelMapper.map(dto, Campeonato.class);
+        return campeonato;
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
