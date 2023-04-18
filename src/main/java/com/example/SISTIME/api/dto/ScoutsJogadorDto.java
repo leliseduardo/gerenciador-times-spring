@@ -35,7 +35,7 @@ public class ScoutsJogadorDto {
     private long idJogador;
     private long idPartida;
 
-    public static ScoutsJogadorDto crate(ScoutsJogador scoutsJogador){
+    public static ScoutsJogadorDto create(ScoutsJogador scoutsJogador){
         ModelMapper modelMapper = new ModelMapper();
         return modelMapper.map(scoutsJogador, ScoutsJogadorDto.class);
     }

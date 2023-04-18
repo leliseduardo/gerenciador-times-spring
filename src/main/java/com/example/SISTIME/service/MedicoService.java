@@ -19,7 +19,7 @@ public class MedicoService {
         return repository.findAll();
     }
 
-    public Optional<Medico> getMEdicoById(long id){
+    public Optional<Medico> getMedicoById(long id){
         return repository.findById(id);
     }
 
