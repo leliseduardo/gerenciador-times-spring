@@ -1,15 +1,14 @@
 package com.example.SISTIME.api.controller;
 
 import com.example.SISTIME.api.dto.JogadorDto;
+import com.example.SISTIME.exception.RegraNegocioException;
 import com.example.SISTIME.model.entity.Jogador;
 import com.example.SISTIME.service.JogadorService;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -39,6 +38,23 @@ public class JogadorController {
 
         return ResponseEntity.ok(jogador.map(JogadorDto::create));
 //        return ResponseEntity.ok(jogador.map(c -> JogadorDto.create(c)));
+    }
+
+    @PostMapping()
+    public ResponseEntity post(@RequestBody JogadorDto dto){
+        try{
+            Jogador jogador = converter(dto);
+            jogador = service.create(jogador);
+            return new ResponseEntity(jogador, HttpStatus.CREATED);
+        }catch (RegraNegocioException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    private Jogador converter(JogadorDto dto){
+        ModelMapper modelMapper = new ModelMapper();
+        Jogador jogador = modelMapper.map(dto, Jogador.class);
+        return jogador;
     }
 }
 
