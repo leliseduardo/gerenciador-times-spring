@@ -1,15 +1,14 @@
 package com.example.SISTIME.api.controller;
 
 import com.example.SISTIME.api.dto.PartidaDto;
+import com.example.SISTIME.exception.RegraNegocioException;
 import com.example.SISTIME.model.entity.Partida;
 import com.example.SISTIME.service.PartidaService;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -37,4 +36,38 @@ public class PartidaController {
 
         return ResponseEntity.ok(partida.map(PartidaDto::create));
     }
+
+    @PostMapping()
+    public ResponseEntity post(@RequestBody PartidaDto dto){
+        try {
+            Partida partida = converter(dto);
+            partida = service.create(partida);
+            return new ResponseEntity(partida, HttpStatus.CREATED);
+        } catch (RegraNegocioException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    private Partida converter(PartidaDto dto){
+        ModelMapper modelMapper = new ModelMapper();
+        Partida partida = modelMapper.map(dto, Partida.class);
+        return partida;
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
