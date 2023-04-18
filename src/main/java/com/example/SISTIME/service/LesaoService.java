@@ -2,6 +2,7 @@ package com.example.SISTIME.service;
 
 import com.example.SISTIME.model.entity.Lesao;
 import com.example.SISTIME.model.repository.LesaoRepository;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,10 +24,12 @@ public class LesaoService {
         return repository.findById(id);
     }
 
+    @Transactional
     public Lesao create(@Valid Lesao lesao){
         return repository.save(lesao);
     }
 
+    @Transactional
     public void delete(Lesao lesao){
         repository.delete(lesao);
     }

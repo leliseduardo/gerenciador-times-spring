@@ -2,6 +2,7 @@ package com.example.SISTIME.service;
 
 import com.example.SISTIME.model.entity.Relacionados;
 import com.example.SISTIME.model.repository.RelacionadosRepository;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,10 +24,12 @@ public class RelacionadosService {
         return repository.findById(id);
     }
 
+    @Transactional
     public Relacionados create(@Valid Relacionados relacionados){
         return repository.save(relacionados);
     }
 
+    @Transactional
     public void delete(Relacionados relacionados){
         repository.delete(relacionados);
     }

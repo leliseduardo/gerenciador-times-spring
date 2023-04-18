@@ -30,6 +30,7 @@ public class EstadioService {
         return repository.save(estadio);
     }
 
+    @Transactional
     public void delete(Estadio estadio){
         repository.delete(estadio);
     }

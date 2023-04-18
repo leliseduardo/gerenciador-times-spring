@@ -2,6 +2,7 @@ package com.example.SISTIME.service;
 
 import com.example.SISTIME.model.entity.PosicaoJogador;
 import com.example.SISTIME.model.repository.PosicaoJogadorRepository;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,10 +24,12 @@ public class PosicaoJogadorService {
         return repository.findById(id);
     }
 
+    @Transactional
     public PosicaoJogador create(@Valid PosicaoJogador posicaoJogador){
         return repository.save(posicaoJogador);
     }
 
+    @Transactional
     public void delete(PosicaoJogador posicaoJogador){
         repository.delete(posicaoJogador);
     }
