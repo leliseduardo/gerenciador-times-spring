@@ -1,15 +1,14 @@
 package com.example.SISTIME.api.controller;
 
 import com.example.SISTIME.api.dto.TemporadaDto;
+import com.example.SISTIME.exception.RegraNegocioException;
 import com.example.SISTIME.model.entity.Temporada;
 import com.example.SISTIME.service.TemporadaService;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -36,5 +35,22 @@ public class TemporadaController {
         }
 
         return ResponseEntity.ok(temporada.map(TemporadaDto::create));
+    }
+
+    @PostMapping()
+    public ResponseEntity post(@RequestBody TemporadaDto dto){
+        try{
+            Temporada temporada = converter(dto);
+            temporada = service.create(temporada);
+            return new ResponseEntity(temporada, HttpStatus.CREATED);
+        } catch (RegraNegocioException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    private Temporada converter(TemporadaDto dto){
+        ModelMapper modelMapper = new ModelMapper();
+        Temporada temporada = modelMapper.map(dto, Temporada.class);
+        return temporada;
     }
 }
