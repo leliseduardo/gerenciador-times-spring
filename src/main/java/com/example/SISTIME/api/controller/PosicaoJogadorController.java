@@ -1,15 +1,14 @@
 package com.example.SISTIME.api.controller;
 
 import com.example.SISTIME.api.dto.PosicaoJogadorDto;
+import com.example.SISTIME.exception.RegraNegocioException;
 import com.example.SISTIME.model.entity.PosicaoJogador;
 import com.example.SISTIME.service.PosicaoJogadorService;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -37,5 +36,22 @@ public class PosicaoJogadorController {
         }
 
         return ResponseEntity.ok(posicaoJogador.map(PosicaoJogadorDto::create));
+    }
+
+    @PostMapping()
+    public ResponseEntity post(@RequestBody PosicaoJogadorDto dto){
+        try{
+            PosicaoJogador posicaoJogador = converter(dto);
+            posicaoJogador = service.create(posicaoJogador);
+            return new ResponseEntity(posicaoJogador, HttpStatus.CREATED);
+        }catch (RegraNegocioException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    private PosicaoJogador converter(PosicaoJogadorDto dto){
+        ModelMapper modelMapper = new ModelMapper();
+        PosicaoJogador posicaoJogador = modelMapper.map(dto, PosicaoJogador.class);
+        return posicaoJogador;
     }
 }
