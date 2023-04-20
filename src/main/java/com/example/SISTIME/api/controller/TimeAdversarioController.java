@@ -48,6 +48,21 @@ public class TimeAdversarioController {
         }
     }
 
+    @PutMapping("/id")
+    public ResponseEntity atualizar(@PathVariable("id") long id, @RequestBody TimeAdversarioDto dto){
+        if(!service.getTimeAdversarioById(id).isPresent()){
+            return new ResponseEntity("TimeAdversario não encontrada", HttpStatus.NOT_FOUND);
+        }
+        try {
+            TimeAdversario timeAdversario = converter(dto);
+            timeAdversario.setId(id);
+            service.create(timeAdversario);
+            return ResponseEntity.ok(timeAdversario);
+        } catch (RegraNegocioException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     private TimeAdversario converter(TimeAdversarioDto dto){
         ModelMapper modelMapper = new ModelMapper();
         TimeAdversario timeAdversario = modelMapper.map(dto, TimeAdversario.class);

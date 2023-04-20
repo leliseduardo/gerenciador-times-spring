@@ -49,6 +49,21 @@ public class PosicaoController {
         }
     }
 
+    @PutMapping("/id")
+    public ResponseEntity atualizar(@PathVariable("id") long id, @RequestBody PosicaoDto dto){
+        if(!service.getPosicaoById(id).isPresent()){
+            return new ResponseEntity("Posicao não encontrada", HttpStatus.NOT_FOUND);
+        }
+        try {
+            Posicao posicao = converter(dto);
+            posicao.setId(id);
+            service.create(posicao);
+            return ResponseEntity.ok(posicao);
+        } catch (RegraNegocioException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     private Posicao converter(PosicaoDto dto){
         ModelMapper modelMapper = new ModelMapper();
         Posicao posicao = modelMapper.map(dto, Posicao.class);

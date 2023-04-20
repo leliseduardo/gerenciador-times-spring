@@ -48,6 +48,21 @@ public class ScoutsJogadorController {
         }
     }
 
+    @PutMapping("/id")
+    public ResponseEntity atualizar(@PathVariable("id") long id, @RequestBody ScoutsJogadorDto dto){
+        if(!service.getScoutsJogadorById(id).isPresent()){
+            return new ResponseEntity("ScoutsJogador não encontrada", HttpStatus.NOT_FOUND);
+        }
+        try {
+            ScoutsJogador scoutsJogador = converter(dto);
+            scoutsJogador.setId(id);
+            service.create(scoutsJogador);
+            return ResponseEntity.ok(scoutsJogador);
+        } catch (RegraNegocioException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     private ScoutsJogador converter(ScoutsJogadorDto dto){
         ModelMapper modelMapper = new ModelMapper();
         ScoutsJogador scoutsJogador = modelMapper.map(dto, ScoutsJogador.class);

@@ -48,6 +48,21 @@ public class ScoutsPartidaController {
         }
     }
 
+    @PutMapping("/id")
+    public ResponseEntity atualizar(@PathVariable("id") long id, @RequestBody ScoutsPartidaDto dto){
+        if(!service.getScoutsPartidaById(id).isPresent()){
+            return new ResponseEntity("ScoutsPartida não encontrada", HttpStatus.NOT_FOUND);
+        }
+        try {
+            ScoutsPartida scoutsPartida = converter(dto);
+            scoutsPartida.setId(id);
+            service.create(scoutsPartida);
+            return ResponseEntity.ok(scoutsPartida);
+        } catch (RegraNegocioException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     private ScoutsPartida converter(ScoutsPartidaDto dto){
         ModelMapper modelMapper = new ModelMapper();
         ScoutsPartida scoutsPartida = modelMapper.map(dto, ScoutsPartida.class);

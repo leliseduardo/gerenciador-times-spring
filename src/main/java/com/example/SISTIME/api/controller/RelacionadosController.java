@@ -48,6 +48,21 @@ public class RelacionadosController {
         }
     }
 
+    @PutMapping("/id")
+    public ResponseEntity atualizar(@PathVariable("id") long id, @RequestBody RelacionadosDto dto){
+        if(!service.getRelacionadosById(id).isPresent()){
+            return new ResponseEntity("Relacionados não encontrada", HttpStatus.NOT_FOUND);
+        }
+        try {
+            Relacionados relacionados = converter(dto);
+            relacionados.setId(id);
+            service.create(relacionados);
+            return ResponseEntity.ok(relacionados);
+        } catch (RegraNegocioException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     private Relacionados converter(RelacionadosDto dto){
         ModelMapper modelMapper = new ModelMapper();
         Relacionados relacionados = modelMapper.map(dto, Relacionados.class);

@@ -5,7 +5,6 @@ import com.example.SISTIME.exception.RegraNegocioException;
 import com.example.SISTIME.model.entity.Lesao;
 import com.example.SISTIME.service.LesaoService;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

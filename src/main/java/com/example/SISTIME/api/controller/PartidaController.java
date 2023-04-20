@@ -48,6 +48,21 @@ public class PartidaController {
         }
     }
 
+    @PutMapping("/id")
+    public ResponseEntity atualizar(@PathVariable("id") long id, @RequestBody PartidaDto dto){
+        if(!service.getPartidaById(id).isPresent()){
+            return new ResponseEntity("Partida não encontrada", HttpStatus.NOT_FOUND);
+        }
+        try {
+            Partida partida = converter(dto);
+            partida.setId(id);
+            service.create(partida);
+            return ResponseEntity.ok(partida);
+        } catch (RegraNegocioException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     private Partida converter(PartidaDto dto){
         ModelMapper modelMapper = new ModelMapper();
         Partida partida = modelMapper.map(dto, Partida.class);

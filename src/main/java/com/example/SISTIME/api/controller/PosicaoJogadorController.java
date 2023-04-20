@@ -49,6 +49,21 @@ public class PosicaoJogadorController {
         }
     }
 
+    @PutMapping("/id")
+    public ResponseEntity atualizar(@PathVariable("id") long id, @RequestBody PosicaoJogadorDto dto){
+        if(!service.getPosicaoJogadorById(id).isPresent()){
+            return new ResponseEntity("PosicaoJogador não encontrada", HttpStatus.NOT_FOUND);
+        }
+        try {
+            PosicaoJogador posicaoJogador = converter(dto);
+            posicaoJogador.setId(id);
+            service.create(posicaoJogador);
+            return ResponseEntity.ok(posicaoJogador);
+        } catch (RegraNegocioException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     private PosicaoJogador converter(PosicaoJogadorDto dto){
         ModelMapper modelMapper = new ModelMapper();
         PosicaoJogador posicaoJogador = modelMapper.map(dto, PosicaoJogador.class);

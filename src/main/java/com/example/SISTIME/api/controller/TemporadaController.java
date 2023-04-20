@@ -48,6 +48,21 @@ public class TemporadaController {
         }
     }
 
+
+    @PutMapping("/id")
+    public ResponseEntity atualizar(@PathVariable("id") long id, @RequestBody TemporadaDto dto){
+        if(!service.getTemporadaById(id).isPresent()){
+            return new ResponseEntity("Temporada não encontrada", HttpStatus.NOT_FOUND);
+        }
+        try {
+            Temporada temporada = converter(dto);
+            temporada.setId(id);
+            service.create(temporada);
+            return ResponseEntity.ok(temporada);
+        } catch (RegraNegocioException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
     private Temporada converter(TemporadaDto dto){
         ModelMapper modelMapper = new ModelMapper();
         Temporada temporada = modelMapper.map(dto, Temporada.class);
