@@ -52,6 +52,21 @@ public class CampeonatoController {
         }
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity atualizar(@PathVariable("id") long id, @RequestBody CampeonatoDto dto){
+        if(!service.getById(id).isPresent()){
+            return new ResponseEntity("Campeonato não encontrado", HttpStatus.NOT_FOUND);
+        }
+        try {
+            Campeonato campeonato = converter(dto);
+            campeonato.setId(id);
+            service.create(campeonato);
+            return ResponseEntity.ok(campeonato);
+        } catch (RegraNegocioException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     private Campeonato converter(CampeonatoDto dto){
         ModelMapper modelMapper = new ModelMapper();
         Campeonato campeonato = modelMapper.map(dto, Campeonato.class);
