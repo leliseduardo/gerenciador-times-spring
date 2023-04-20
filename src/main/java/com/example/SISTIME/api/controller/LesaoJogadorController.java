@@ -49,7 +49,20 @@ public class LesaoJogadorController {
         }
     }
 
-    PutMapping("/id")
+    @PutMapping("/id")
+    public ResponseEntity atualizar(@PathVariable("id") long id, @RequestBody LesaoJogadorDto dto){
+        if(!service.getLesaoJogadorById(id).isPresent()){
+            return new ResponseEntity("LesaoJogador não encontrada", HttpStatus.NOT_FOUND);
+        }
+        try {
+            LesaoJogador lesaoJogador = converter(dto);
+            lesaoJogador.setId(id);
+            service.create(lesaoJogador);
+            return ResponseEntity.ok(lesaoJogador);
+        } catch (RegraNegocioException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 
     private LesaoJogador converter(LesaoJogadorDto dto){
         ModelMapper modelMapper = new ModelMapper();

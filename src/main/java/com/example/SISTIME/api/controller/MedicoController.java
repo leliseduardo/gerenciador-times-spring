@@ -50,6 +50,21 @@ public class MedicoController {
         }
     }
 
+    @PutMapping("/id")
+    public ResponseEntity atualizar(@PathVariable("id") long id, @RequestBody MedicoDto dto){
+        if(!service.getMedicoById(id).isPresent()){
+            return new ResponseEntity("Médico não encontrado", HttpStatus.NOT_FOUND);
+        }
+        try {
+            Medico medico = converter(dto);
+            medico.setId(id);
+            service.create(medico);
+            return ResponseEntity.ok(medico);
+        } catch (RegraNegocioException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     private Medico converter(MedicoDto dto){
         ModelMapper modelMapper = new ModelMapper();
         Medico medico = modelMapper.map(dto, Medico.class);
