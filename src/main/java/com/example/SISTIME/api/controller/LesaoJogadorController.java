@@ -49,6 +49,8 @@ public class LesaoJogadorController {
         }
     }
 
+    PutMapping("/id")
+
     private LesaoJogador converter(LesaoJogadorDto dto){
         ModelMapper modelMapper = new ModelMapper();
         LesaoJogador lesaoJogador = modelMapper.map(dto, LesaoJogador.class);

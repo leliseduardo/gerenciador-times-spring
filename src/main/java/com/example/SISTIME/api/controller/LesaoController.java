@@ -50,6 +50,21 @@ public class LesaoController {
         }
     }
 
+    @PutMapping("/id")
+    public ResponseEntity atualizar(@PathVariable("id") long id, @RequestBody LesaoDto dto){
+        if(!service.getLesaoById(id).isPresent()){
+            return new ResponseEntity("Lesao não encontrada", HttpStatus.NOT_FOUND);
+        }
+        try {
+            Lesao lesao = converter(dto);
+            lesao.setId(id);
+            service.create(lesao);
+            return ResponseEntity.ok(lesao);
+        } catch (RegraNegocioException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     private Lesao converter(LesaoDto dto){
         ModelMapper modelMapper = new ModelMapper();
         Lesao lesao = modelMapper.map(dto, Lesao.class);

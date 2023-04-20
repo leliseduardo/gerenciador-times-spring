@@ -53,7 +53,7 @@ public class CampeonatoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity atualizar(@PathVariable("id") long id, @RequestBody CampeonatoDto dto){
+    public ResponseEntity atualizar(@PathVariable("/id") long id, @RequestBody CampeonatoDto dto){
         if(!service.getById(id).isPresent()){
             return new ResponseEntity("Campeonato não encontrado", HttpStatus.NOT_FOUND);
         }

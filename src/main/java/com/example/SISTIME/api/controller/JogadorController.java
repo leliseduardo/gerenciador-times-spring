@@ -51,6 +51,21 @@ public class JogadorController {
         }
     }
 
+    @PutMapping("id")
+    public ResponseEntity atualizar(@PathVariable("/id") long id, @RequestBody JogadorDto dto){
+        if(!service.getJogadorById(id).isPresent()){
+            return new ResponseEntity("Jogador não encontrado", HttpStatus.NOT_FOUND);
+        }
+        try {
+            Jogador jogador = converter(dto);
+            jogador.setId(id);
+            service.create(jogador);
+            return ResponseEntity.ok(jogador);
+        }catch (RegraNegocioException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     private Jogador converter(JogadorDto dto){
         ModelMapper modelMapper = new ModelMapper();
         Jogador jogador = modelMapper.map(dto, Jogador.class);

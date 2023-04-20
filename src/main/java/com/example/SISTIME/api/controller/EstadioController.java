@@ -53,7 +53,7 @@ public class EstadioController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity atualizar(@PathVariable("id") long id, @RequestBody EstadioDto dto){
+    public ResponseEntity atualizar(@PathVariable("/id") long id, @RequestBody EstadioDto dto){
         if(!service.getById(id).isPresent()){
             return new ResponseEntity("Estádio não encontrado", HttpStatus.NOT_FOUND);
         }
