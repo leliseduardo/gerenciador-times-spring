@@ -52,6 +52,21 @@ public class EstadioController {
         }
     }
 
+    @PutMapping("{id}")
+    public ResponseEntity atualizar(@PathVariable("id") long id, @RequestBody EstadioDto dto){
+        if(!service.getById(id).isPresent()){
+            return new ResponseEntity("Estádio não encontrado", HttpStatus.NOT_FOUND);
+        }
+        try {
+            Estadio estadio = converter(dto);
+            estadio.setId(id);
+            service.create(estadio);
+            return ResponseEntity.ok(estadio);
+        } catch (RegraNegocioException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     private Estadio converter(EstadioDto dto){
         ModelMapper modelMapper = new ModelMapper();
         Estadio estadio = modelMapper.map(dto, Estadio.class);
