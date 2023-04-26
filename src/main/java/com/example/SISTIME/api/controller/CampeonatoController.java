@@ -67,7 +67,7 @@ public class CampeonatoController {
         }
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity excluir(@PathVariable("id") Long id){
         Optional<Campeonato> campeonato = service.getById(id);
         if(!campeonato.isPresent()){
