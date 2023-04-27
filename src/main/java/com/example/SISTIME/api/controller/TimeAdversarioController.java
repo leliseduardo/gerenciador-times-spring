@@ -48,7 +48,7 @@ public class TimeAdversarioController {
         }
     }
 
-    @PutMapping("/id")
+    @PutMapping("/{id}")
     public ResponseEntity atualizar(@PathVariable("id") long id, @RequestBody TimeAdversarioDto dto){
         if(!service.getTimeAdversarioById(id).isPresent()){
             return new ResponseEntity("TimeAdversario não encontrada", HttpStatus.NOT_FOUND);

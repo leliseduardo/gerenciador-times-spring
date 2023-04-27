@@ -48,7 +48,7 @@ public class TecnicoController {
         }
     }
 
-    @PutMapping("/id")
+    @PutMapping("/{id}")
     public ResponseEntity atualizar(@PathVariable("id") long id, @RequestBody TecnicoDto dto){
         if(!service.getTecnicoById(id).isPresent()){
             return new ResponseEntity("Tecnico não encontrada", HttpStatus.NOT_FOUND);

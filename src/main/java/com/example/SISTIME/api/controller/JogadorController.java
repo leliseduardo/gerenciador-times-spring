@@ -51,7 +51,7 @@ public class JogadorController {
         }
     }
 
-    @PutMapping("id")
+    @PutMapping("/{id}")
     public ResponseEntity atualizar(@PathVariable("/id") long id, @RequestBody JogadorDto dto){
         if(!service.getJogadorById(id).isPresent()){
             return new ResponseEntity("Jogador não encontrado", HttpStatus.NOT_FOUND);
@@ -66,7 +66,7 @@ public class JogadorController {
         }
     }
 
-    @DeleteMapping({"/id"})
+    @DeleteMapping({"/{id}"})
     public ResponseEntity excluir(@PathVariable("id") Long id){
         Optional<Jogador> jogador = service.getJogadorById(id);
         if(!jogador.isPresent()){

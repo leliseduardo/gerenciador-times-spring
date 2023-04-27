@@ -48,7 +48,7 @@ public class ScoutsPartidaController {
         }
     }
 
-    @PutMapping("/id")
+    @PutMapping("/{id}")
     public ResponseEntity atualizar(@PathVariable("id") long id, @RequestBody ScoutsPartidaDto dto){
         if(!service.getScoutsPartidaById(id).isPresent()){
             return new ResponseEntity("ScoutsPartida não encontrada", HttpStatus.NOT_FOUND);

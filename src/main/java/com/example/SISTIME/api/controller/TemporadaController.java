@@ -49,7 +49,7 @@ public class TemporadaController {
     }
 
 
-    @PutMapping("/id")
+    @PutMapping("/{id}")
     public ResponseEntity atualizar(@PathVariable("id") long id, @RequestBody TemporadaDto dto){
         if(!service.getTemporadaById(id).isPresent()){
             return new ResponseEntity("Temporada não encontrada", HttpStatus.NOT_FOUND);

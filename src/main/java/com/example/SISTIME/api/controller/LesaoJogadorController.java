@@ -49,7 +49,7 @@ public class LesaoJogadorController {
         }
     }
 
-    @PutMapping("/id")
+    @PutMapping("/{id}")
     public ResponseEntity atualizar(@PathVariable("id") long id, @RequestBody LesaoJogadorDto dto){
         if(!service.getLesaoJogadorById(id).isPresent()){
             return new ResponseEntity("LesaoJogador não encontrada", HttpStatus.NOT_FOUND);

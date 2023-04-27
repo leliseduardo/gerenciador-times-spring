@@ -50,7 +50,7 @@ public class MedicoController {
         }
     }
 
-    @PutMapping("/id")
+    @PutMapping("/{id}")
     public ResponseEntity atualizar(@PathVariable("id") long id, @RequestBody MedicoDto dto){
         if(!service.getMedicoById(id).isPresent()){
             return new ResponseEntity("Médico não encontrado", HttpStatus.NOT_FOUND);

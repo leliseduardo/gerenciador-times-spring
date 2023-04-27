@@ -48,7 +48,7 @@ public class RelacionadosController {
         }
     }
 
-    @PutMapping("/id")
+    @PutMapping("/{id}")
     public ResponseEntity atualizar(@PathVariable("id") long id, @RequestBody RelacionadosDto dto){
         if(!service.getRelacionadosById(id).isPresent()){
             return new ResponseEntity("Relacionados não encontrada", HttpStatus.NOT_FOUND);

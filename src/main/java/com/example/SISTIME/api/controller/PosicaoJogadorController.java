@@ -49,7 +49,7 @@ public class PosicaoJogadorController {
         }
     }
 
-    @PutMapping("/id")
+    @PutMapping("/{id}")
     public ResponseEntity atualizar(@PathVariable("id") long id, @RequestBody PosicaoJogadorDto dto){
         if(!service.getPosicaoJogadorById(id).isPresent()){
             return new ResponseEntity("PosicaoJogador não encontrada", HttpStatus.NOT_FOUND);

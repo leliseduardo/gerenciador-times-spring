@@ -48,7 +48,7 @@ public class PartidaController {
         }
     }
 
-    @PutMapping("/id")
+    @PutMapping("/{id}")
     public ResponseEntity atualizar(@PathVariable("id") long id, @RequestBody PartidaDto dto){
         if(!service.getPartidaById(id).isPresent()){
             return new ResponseEntity("Partida não encontrada", HttpStatus.NOT_FOUND);

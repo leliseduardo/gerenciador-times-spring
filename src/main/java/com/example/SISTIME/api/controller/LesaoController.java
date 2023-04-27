@@ -50,7 +50,7 @@ public class LesaoController {
         }
     }
 
-    @PutMapping("/id")
+    @PutMapping("/{id}")
     public ResponseEntity atualizar(@PathVariable("id") long id, @RequestBody LesaoDto dto){
         if(!service.getLesaoById(id).isPresent()){
             return new ResponseEntity("Lesao não encontrada", HttpStatus.NOT_FOUND);
@@ -65,7 +65,7 @@ public class LesaoController {
         }
     }
 
-    @DeleteMapping("{/id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity excluir(@PathVariable("id") Long id){
         Optional<Lesao> lesao = service.getLesaoById(id);
         if(!lesao.isPresent()){

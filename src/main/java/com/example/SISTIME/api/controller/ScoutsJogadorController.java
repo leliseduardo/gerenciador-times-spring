@@ -48,7 +48,7 @@ public class ScoutsJogadorController {
         }
     }
 
-    @PutMapping("/id")
+    @PutMapping("/{id}")
     public ResponseEntity atualizar(@PathVariable("id") long id, @RequestBody ScoutsJogadorDto dto){
         if(!service.getScoutsJogadorById(id).isPresent()){
             return new ResponseEntity("ScoutsJogador não encontrada", HttpStatus.NOT_FOUND);

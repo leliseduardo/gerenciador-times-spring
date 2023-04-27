@@ -49,7 +49,7 @@ public class PosicaoController {
         }
     }
 
-    @PutMapping("/id")
+    @PutMapping("/{id}")
     public ResponseEntity atualizar(@PathVariable("id") long id, @RequestBody PosicaoDto dto){
         if(!service.getPosicaoById(id).isPresent()){
             return new ResponseEntity("Posicao não encontrada", HttpStatus.NOT_FOUND);

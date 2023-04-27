@@ -4,6 +4,8 @@ import com.example.SISTIME.api.dto.CampeonatoDto;
 import com.example.SISTIME.exception.RegraNegocioException;
 import com.example.SISTIME.model.entity.Campeonato;
 import com.example.SISTIME.service.CampeonatoService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -17,11 +19,13 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/v1/campeonato")
 @RequiredArgsConstructor
+//@Api("Api do curso")
 public class CampeonatoController {
 
     private final CampeonatoService service;
 
     @GetMapping
+//    @ApiOperation("Retorna uma lista de campeonados")
     public ResponseEntity get() {
         List<Campeonato> campeonatos = service.getCampeonato();
         return ResponseEntity.ok(campeonatos.stream().map(c -> CampeonatoDto.create(c)).collect(Collectors.toList()));
