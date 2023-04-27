@@ -6,10 +6,12 @@ import com.example.SISTIME.model.entity.Lesao;
 import com.example.SISTIME.service.LesaoService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.KeyStore;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -60,6 +62,21 @@ public class LesaoController {
             service.create(lesao);
             return ResponseEntity.ok(lesao);
         } catch (RegraNegocioException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("{/id}")
+    public ResponseEntity excluir(@PathVariable("id") Long id){
+        Optional<Lesao> lesao = service.getLesaoById(id);
+        if(!lesao.isPresent()){
+            return new ResponseEntity("Lesao não encontrada", HttpStatus.NOT_FOUND);
+        }
+        try {
+            service.delete(lesao.get());
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
+        }
+        catch (RegraNegocioException e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
