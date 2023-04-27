@@ -66,6 +66,21 @@ public class JogadorController {
         }
     }
 
+    @DeleteMapping({"/id"})
+    public ResponseEntity excluir(@PathVariable("id") Long id){
+        Optional<Jogador> jogador = service.getJogadorById(id);
+        if(!jogador.isPresent()){
+            return new ResponseEntity("Jogador não encontrado", HttpStatus.NOT_FOUND);
+        }
+        try {
+            service.delete(jogador.get());
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
+        }
+        catch (RegraNegocioException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     private Jogador converter(JogadorDto dto){
         ModelMapper modelMapper = new ModelMapper();
         Jogador jogador = modelMapper.map(dto, Jogador.class);

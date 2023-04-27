@@ -68,7 +68,7 @@ public class EstadioController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity excluir(@PathVariable("id") long id){
+    public ResponseEntity excluir(@PathVariable("id") Long id){
         Optional<Estadio> estadio = service.getById(id);
         if(!estadio.isPresent()){
             return new ResponseEntity("Estádio não encontrado", HttpStatus.NOT_FOUND);
