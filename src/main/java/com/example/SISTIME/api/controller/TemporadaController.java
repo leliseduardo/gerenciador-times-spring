@@ -63,6 +63,22 @@ public class TemporadaController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity excluir(@PathVariable("id") Long id){
+        Optional<Temporada> temporada = service.getTemporadaById(id);
+        if(!temporada.isPresent()){
+            return new ResponseEntity("Temporada não encontrado", HttpStatus.NOT_FOUND);
+        }
+        try{
+            service.delete(temporada.get());
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
+        }
+        catch (RegraNegocioException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     private Temporada converter(TemporadaDto dto){
         ModelMapper modelMapper = new ModelMapper();
         Temporada temporada = modelMapper.map(dto, Temporada.class);

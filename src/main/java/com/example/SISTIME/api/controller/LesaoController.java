@@ -6,7 +6,6 @@ import com.example.SISTIME.model.entity.Lesao;
 import com.example.SISTIME.service.LesaoService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

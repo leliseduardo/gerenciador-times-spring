@@ -63,6 +63,21 @@ public class ScoutsPartidaController {
         }
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity excluir(@PathVariable("id") Long id){
+        Optional<ScoutsPartida> scoutsPartida = service.getScoutsPartidaById(id);
+        if(!scoutsPartida.isPresent()){
+            return new ResponseEntity("ScoutsPartida não encontrado", HttpStatus.NOT_FOUND);
+        }
+        try{
+            service.delete(scoutsPartida.get());
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
+        }
+        catch (RegraNegocioException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     private ScoutsPartida converter(ScoutsPartidaDto dto){
         ModelMapper modelMapper = new ModelMapper();
         ScoutsPartida scoutsPartida = modelMapper.map(dto, ScoutsPartida.class);

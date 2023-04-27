@@ -63,6 +63,21 @@ public class ScoutsJogadorController {
         }
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity excluir(@PathVariable("id") Long id){
+        Optional<ScoutsJogador> scoutsJogador = service.getScoutsJogadorById(id);
+        if(!scoutsJogador.isPresent()){
+            return new ResponseEntity("ScoutsJogador não encontrado", HttpStatus.NOT_FOUND);
+        }
+        try{
+            service.delete(scoutsJogador.get());
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
+        }
+        catch (RegraNegocioException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     private ScoutsJogador converter(ScoutsJogadorDto dto){
         ModelMapper modelMapper = new ModelMapper();
         ScoutsJogador scoutsJogador = modelMapper.map(dto, ScoutsJogador.class);

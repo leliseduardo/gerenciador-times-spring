@@ -65,6 +65,21 @@ public class MedicoController {
         }
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity excluir(@PathVariable("id") Long id){
+        Optional<Medico> medico = service.getMedicoById(id);
+        if(!medico.isPresent()){
+            return new ResponseEntity("Medico não encontrado", HttpStatus.NOT_FOUND);
+        }
+        try{
+            service.delete(medico.get());
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
+        }
+        catch (RegraNegocioException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     private Medico converter(MedicoDto dto){
         ModelMapper modelMapper = new ModelMapper();
         Medico medico = modelMapper.map(dto, Medico.class);

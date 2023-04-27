@@ -63,6 +63,21 @@ public class TecnicoController {
         }
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity excluir(@PathVariable("id") Long id){
+        Optional<Tecnico> tecnico = service.getTecnicoById(id);
+        if(!tecnico.isPresent()){
+            return new ResponseEntity("Tecnico não encontrado", HttpStatus.NOT_FOUND);
+        }
+        try{
+            service.delete(tecnico.get());
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
+        }
+        catch (RegraNegocioException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     private Tecnico converter(TecnicoDto dto){
         ModelMapper modelMapper = new ModelMapper();
         Tecnico tecnico = modelMapper.map(dto, Tecnico.class);

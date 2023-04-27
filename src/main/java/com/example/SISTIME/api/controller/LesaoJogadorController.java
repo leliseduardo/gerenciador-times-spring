@@ -64,6 +64,21 @@ public class LesaoJogadorController {
         }
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity excluir(@PathVariable("id") Long id){
+        Optional<LesaoJogador> lesaoJogador = service.getLesaoJogadorById(id);
+        if(!lesaoJogador.isPresent()){
+            return new ResponseEntity("LesaoJogador não encontrado", HttpStatus.NOT_FOUND);
+        }
+        try{
+            service.delete(lesaoJogador.get());
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
+        }
+        catch (RegraNegocioException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     private LesaoJogador converter(LesaoJogadorDto dto){
         ModelMapper modelMapper = new ModelMapper();
         LesaoJogador lesaoJogador = modelMapper.map(dto, LesaoJogador.class);

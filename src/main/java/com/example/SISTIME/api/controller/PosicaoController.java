@@ -64,6 +64,21 @@ public class PosicaoController {
         }
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity excluir(@PathVariable("id") Long id){
+        Optional<Posicao> posicao = service.getPosicaoById(id);
+        if(!posicao.isPresent()){
+            return new ResponseEntity("Posicao não encontrado", HttpStatus.NOT_FOUND);
+        }
+        try{
+            service.delete(posicao.get());
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
+        }
+        catch (RegraNegocioException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     private Posicao converter(PosicaoDto dto){
         ModelMapper modelMapper = new ModelMapper();
         Posicao posicao = modelMapper.map(dto, Posicao.class);

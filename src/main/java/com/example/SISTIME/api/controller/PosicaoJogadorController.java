@@ -64,6 +64,21 @@ public class PosicaoJogadorController {
         }
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity excluir(@PathVariable("id") Long id){
+        Optional<PosicaoJogador> posicaoJogador = service.getPosicaoJogadorById(id);
+        if(!posicaoJogador.isPresent()){
+            return new ResponseEntity("PosicaoJogador não encontrado", HttpStatus.NOT_FOUND);
+        }
+        try{
+            service.delete(posicaoJogador.get());
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
+        }
+        catch (RegraNegocioException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     private PosicaoJogador converter(PosicaoJogadorDto dto){
         ModelMapper modelMapper = new ModelMapper();
         PosicaoJogador posicaoJogador = modelMapper.map(dto, PosicaoJogador.class);

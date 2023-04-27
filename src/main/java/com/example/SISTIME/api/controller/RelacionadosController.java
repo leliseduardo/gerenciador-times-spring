@@ -63,6 +63,21 @@ public class RelacionadosController {
         }
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity excluir(@PathVariable("id") Long id){
+        Optional<Relacionados> relacionados = service.getRelacionadosById(id);
+        if(!relacionados.isPresent()){
+            return new ResponseEntity("Relacionados não encontrado", HttpStatus.NOT_FOUND);
+        }
+        try{
+            service.delete(relacionados.get());
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
+        }
+        catch (RegraNegocioException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     private Relacionados converter(RelacionadosDto dto){
         ModelMapper modelMapper = new ModelMapper();
         Relacionados relacionados = modelMapper.map(dto, Relacionados.class);
