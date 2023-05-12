@@ -9,28 +9,29 @@ import org.modelmapper.ModelMapper;
 import java.time.LocalDate;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class TecnicoDto {
-
-    private long id;
+    private Long id;
     private String nome;
     private String email;
+    private String login;
     private LocalDate dataNascimento;
     private String cpf;
     private String telefone;
     private String logradouro;
-    private String numero;
+    private Integer numero;
     private String complemento;
     private String bairro;
     private String cidade;
     private String estado;
     private String pais;
     private String cep;
-    private LocalDate dataContratacao;
-    private LocalDate dataDemissao;
+    private String nacionalidade;
+    private LocalDate dataDeContratacao;
+    private LocalDate dataDeDemissao;
 
-    public static TecnicoDto create(Tecnico tecnico){
+    public static TecnicoDto create(Tecnico tecnico) {
         ModelMapper modelMapper = new ModelMapper();
         return modelMapper.map(tecnico, TecnicoDto.class);
     }

@@ -1,41 +1,29 @@
 package com.example.SISTIME.model.entity;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Partida {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
-    @NotNull
+    private Long id;
     private LocalDate data;
-    @NotNull
-    private LocalDateTime hora;
-    @NotBlank
-    private String placar;
-    @NotNull
-    @ManyToOne
-    private Campeonato campeonato;
-    @NotNull
-    @ManyToOne
-    private Estadio estadio;
-    @NotNull
+    private LocalDateTime horario;
     @ManyToOne
     private TimeAdversario timeAdversario;
-    @NotNull
+    @ManyToOne
+    private Campeonato campeonato;
+    @ManyToOne
+    private Estadio estadio;
     @ManyToOne
     private Tecnico tecnico;
 }

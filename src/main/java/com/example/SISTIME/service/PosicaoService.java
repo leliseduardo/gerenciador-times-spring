@@ -1,65 +1,63 @@
 package com.example.SISTIME.service;
 
+import com.example.SISTIME.exception.RegraNegocioException;
 import com.example.SISTIME.model.entity.Posicao;
 import com.example.SISTIME.model.repository.PosicaoRepository;
-import jakarta.transaction.Transactional;
-import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
 public class PosicaoService {
 
-    @Autowired
     private PosicaoRepository repository;
 
-    public List<Posicao> getPosicao(){
+    public PosicaoService (PosicaoRepository repository) {
+        this.repository = repository;
+    }
+
+    public List<Posicao> getPosicoes() {
         return repository.findAll();
     }
 
-    public Optional<Posicao> getPosicaoById(long id){
+    public Optional<Posicao> getPosicaoById (Long id) {
         return repository.findById(id);
     }
 
+    public Posicao getPosicaoExistenteById (Long id) {
+        return repository.getById(id);
+    }
+
     @Transactional
-    public Posicao create(@Valid Posicao posicao){
+    public Posicao salvar(Posicao posicao) {
+        validar(posicao);
         return repository.save(posicao);
     }
 
     @Transactional
-    public void delete(Posicao posicao){
+    public void excluir(Posicao posicao) {
+        Objects.requireNonNull(posicao.getId());
         repository.delete(posicao);
     }
+
+    public void validar(Posicao posicao) {
+        if (posicao.getNome() == null || posicao.getNome().trim().equals("")) {
+            throw new RegraNegocioException("Nome inválido");
+        }
+
+        if (posicao.getAreaCampo() == null || posicao.getAreaCampo().trim().equals("")) {
+            throw new RegraNegocioException("Area do Campo inválida");
+        }
+
+        if (posicao.getLadoCampo() == null || posicao.getLadoCampo().trim().equals("")) {
+            throw new RegraNegocioException("Lado do Campo inválido");
+        }
+
+        if (posicao.getSigla() == null || posicao.getSigla().trim().equals("")) {
+            throw new RegraNegocioException("Sigla inválida");
+        }
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

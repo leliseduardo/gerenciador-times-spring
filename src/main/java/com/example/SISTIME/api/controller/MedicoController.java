@@ -1,10 +1,13 @@
 package com.example.SISTIME.api.controller;
 
-
 import com.example.SISTIME.api.dto.MedicoDto;
 import com.example.SISTIME.exception.RegraNegocioException;
 import com.example.SISTIME.model.entity.Medico;
 import com.example.SISTIME.service.MedicoService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -18,21 +21,30 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/v1/medicos")
 @RequiredArgsConstructor
+@Api(tags="API de Medicos")
 public class MedicoController {
-
     private final MedicoService service;
 
-    @GetMapping
-    public ResponseEntity get(){
-        List<Medico> medicos = service.getMedico();
+    @GetMapping()
+    @ApiOperation("Obter todos os médicos")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Médicos encontrados")
+    })
+    public ResponseEntity get() {
+        List<Medico> medicos = service.getMedicos();
         return ResponseEntity.ok(medicos.stream().map(MedicoDto::create).collect(Collectors.toList()));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity getById(@PathVariable long id){
+    @ApiOperation("Obter detalhes de um médico")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Médico encontrado"),
+            @ApiResponse(code = 404, message = "Médico não encontrado")
+    })
+    public ResponseEntity get(@PathVariable("id") Long id) {
         Optional<Medico> medico = service.getMedicoById(id);
 
-        if(!medico.isPresent()){
+        if (!medico.isPresent()){
             return new ResponseEntity("Medico não encontrada", HttpStatus.NOT_FOUND);
         }
 
@@ -40,49 +52,67 @@ public class MedicoController {
     }
 
     @PostMapping()
-    public ResponseEntity post(@RequestBody MedicoDto dto){
+    @ApiOperation("Salvar um novo médico")
+    @ApiResponses({
+            @ApiResponse(code = 201, message = "Médico salvo com sucesso"),
+            @ApiResponse(code = 400, message = "Erro ao salvar um médico")
+    })
+    public ResponseEntity post(@RequestBody MedicoDto dto) {
         try {
             Medico medico = converter(dto);
-            medico = service.create(medico);
+            medico = service.salvar(medico);
             return new ResponseEntity(medico, HttpStatus.CREATED);
-        }catch (RegraNegocioException e){
+        } catch (RegraNegocioException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
     @PutMapping("/{id}")
+    @ApiOperation("Editar um médico")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Médico editado com sucesso"),
+            @ApiResponse(code = 404, message = "Médico não encontrado"),
+            @ApiResponse(code = 400, message = "Erro ao salvar um médico")
+    })
     public ResponseEntity atualizar(@PathVariable("id") long id, @RequestBody MedicoDto dto){
         if(!service.getMedicoById(id).isPresent()){
-            return new ResponseEntity("Médico não encontrado", HttpStatus.NOT_FOUND);
-        }
-        try {
-            Medico medico = converter(dto);
-            medico.setId(id);
-            service.create(medico);
-            return ResponseEntity.ok(medico);
-        } catch (RegraNegocioException e){
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity excluir(@PathVariable("id") Long id){
-        Optional<Medico> medico = service.getMedicoById(id);
-        if(!medico.isPresent()){
             return new ResponseEntity("Medico não encontrado", HttpStatus.NOT_FOUND);
         }
         try{
-            service.delete(medico.get());
-            return new ResponseEntity(HttpStatus.NO_CONTENT);
-        }
-        catch (RegraNegocioException e){
+            Medico medico = converter(dto);
+            medico.setId(id);
+            service.salvar(medico);
+            return ResponseEntity.ok(medico);
+        }catch (RegraNegocioException e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
-    private Medico converter(MedicoDto dto){
+    @DeleteMapping("id")
+    @ApiOperation("Deletar um médico")
+    @ApiResponses({
+            @ApiResponse(code = 204, message = "Médico deletado com sucesso"),
+            @ApiResponse(code = 404, message = "Médico não encontrado"),
+            @ApiResponse(code = 400, message = "Erro ao deletar um médico")
+    })
+    public ResponseEntity excluir(@PathVariable("id") long id) {
+        Optional<Medico> medico = service.getMedicoById(id);
+        if (!medico.isPresent()) {
+            return new ResponseEntity<>("Medico não encontrado", HttpStatus.NOT_FOUND);
+        }
+        try {
+            service.excluir(medico.get());
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
+        } catch (RegraNegocioException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+
+    }
+
+    public Medico converter(MedicoDto dto){
         ModelMapper modelMapper = new ModelMapper();
         Medico medico = modelMapper.map(dto, Medico.class);
         return medico;
     }
+
 }

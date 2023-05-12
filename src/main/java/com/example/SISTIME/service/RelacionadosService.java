@@ -1,66 +1,51 @@
 package com.example.SISTIME.service;
 
-import com.example.SISTIME.model.entity.Relacionados;
-import com.example.SISTIME.model.repository.RelacionadosRepository;
-import jakarta.transaction.Transactional;
-import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.SISTIME.exception.RegraNegocioException;
+import com.example.SISTIME.model.entity.Relacionado;
+import com.example.SISTIME.model.repository.RelacionadoRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
 public class RelacionadosService {
 
-    @Autowired
-    private RelacionadosRepository repository;
+    private RelacionadoRepository repository;
 
-    public List<Relacionados> getRelacionados(){
-        return repository.findAll();
+    public RelacionadosService(RelacionadoRepository repository) {
+        this.repository = repository;
     }
 
-    public Optional<Relacionados> getRelacionadosById(long id){
-        return repository.findById(id);
+    public List<Relacionado> getRelacionados() {
+        return this.repository.findAll();
+    }
+
+    public Optional<Relacionado> getRelacionadosById(Long id) {
+        return this.repository.findById(id);
     }
 
     @Transactional
-    public Relacionados create(@Valid Relacionados relacionados){
-        return repository.save(relacionados);
+    public Relacionado salvar(Relacionado relacionado) {
+        validar(relacionado);
+        return repository.save(relacionado);
     }
 
     @Transactional
-    public void delete(Relacionados relacionados){
-        repository.delete(relacionados);
+    public void excluir(Relacionado relacionado) {
+        Objects.requireNonNull(relacionado.getId());
+        repository.delete(relacionado);
+    }
+
+    public void validar(Relacionado relacionado) {
+        if (relacionado.getJogador() == null || relacionado.getJogador().getId() == null || relacionado.getJogador().getId() == 0) {
+            throw new RegraNegocioException("Jogador inválido");
+        }
+
+        if (relacionado.getPartida() == null || relacionado.getPartida().getId() == null || relacionado.getPartida().getId() == 0) {
+            throw new RegraNegocioException("Partida inválida");
+        }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

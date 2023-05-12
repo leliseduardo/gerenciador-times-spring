@@ -1,12 +1,12 @@
 package com.example.SISTIME.service;
 
-import com.example.SISTIME.model.entity.ScoutsPartida;
-import com.example.SISTIME.model.repository.ScoutsPartidaRepository;
-import jakarta.transaction.Transactional;
-import jakarta.validation.Valid;
+import com.example.SISTIME.model.entity.ScoutPartida;
+import com.example.SISTIME.model.repository.ScoutPartidaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,47 +14,23 @@ import java.util.Optional;
 public class ScoutsPartidaService {
 
     @Autowired
-    private ScoutsPartidaRepository repository;
+    private ScoutPartidaRepository repository;
 
-    public List<ScoutsPartida> getScoutsPartida(){
+    public List<ScoutPartida> getScoutsPartida(){
         return repository.findAll();
     }
 
-    public Optional<ScoutsPartida> getScoutsPartidaById(long id){
+    public Optional<ScoutPartida> getScoutsPartidaById(long id){
         return repository.findById(id);
     }
 
     @Transactional
-    public ScoutsPartida create(@Valid ScoutsPartida scoutsPartida){
-        return repository.save(scoutsPartida);
+    public ScoutPartida salvar(@Valid ScoutPartida scoutPartida){
+        return repository.save(scoutPartida);
     }
 
     @Transactional
-    public void delete(ScoutsPartida scoutsPartida){
-        repository.delete(scoutsPartida);
+    public void excluir(ScoutPartida scoutPartida){
+        repository.delete(scoutPartida);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

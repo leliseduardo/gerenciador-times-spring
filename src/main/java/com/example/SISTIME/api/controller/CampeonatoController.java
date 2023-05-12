@@ -6,6 +6,8 @@ import com.example.SISTIME.model.entity.Campeonato;
 import com.example.SISTIME.service.CampeonatoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -17,114 +19,98 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/v1/campeonato")
+@RequestMapping("/api/v1/campeonatos")
 @RequiredArgsConstructor
-//@Api("Api do curso")
+@Api(tags="API de Campeonatos")
 public class CampeonatoController {
-
     private final CampeonatoService service;
 
-    @GetMapping
-//    @ApiOperation("Retorna uma lista de campeonados")
+    @GetMapping()
+    @ApiOperation("Obter todos os campeonatos")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Campeonatos encontrados")
+    })
     public ResponseEntity get() {
         List<Campeonato> campeonatos = service.getCampeonato();
-        return ResponseEntity.ok(campeonatos.stream().map(c -> CampeonatoDto.create(c)).collect(Collectors.toList()));
-        //return ResponseEntity.ok(campeonatos.stream().map(CampeonatoDto::create).collect(Collectors.toList()));
+        return ResponseEntity.ok(campeonatos.stream().map(CampeonatoDto::create).collect(Collectors.toList()));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity getById(@PathVariable("id") long id){
+    @ApiOperation("Obter detalhes de um campeonato")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Campeonato encontrado"),
+            @ApiResponse(code = 404, message = "Campeonato não encontrado")
+    })
+    public ResponseEntity get(@PathVariable("id") Long id) {
+        Optional<Campeonato> campeonato = service.getCampeonatoById(id);
 
-        Optional<Campeonato> campeonato = service.getById(id);
-
-        if(!campeonato.isPresent()){
+        if (!campeonato.isPresent()){
             return new ResponseEntity("Campeonato não encontrado", HttpStatus.NOT_FOUND);
         }
 
-        return ResponseEntity.ok(campeonato.map(c -> CampeonatoDto.create(c)));
-        //return ResponseEntity.ok(campeonato.map(CampeonatoDto::create);
+        return ResponseEntity.ok(campeonato.map(CampeonatoDto::create));
     }
 
     @PostMapping()
-    public ResponseEntity post(@RequestBody CampeonatoDto dto){
-        try{
+    @ApiOperation("Salvar um novo campeonato")
+    @ApiResponses({
+            @ApiResponse(code = 201, message = "Campeonato salvo com sucesso"),
+            @ApiResponse(code = 400, message = "Erro ao salvar um campeonato")
+    })
+    public ResponseEntity post (@RequestBody CampeonatoDto dto) {
+        try {
             Campeonato campeonato = converter(dto);
-            campeonato = service.create(campeonato);
+            campeonato = service.salvar(campeonato);
             return new ResponseEntity(campeonato, HttpStatus.CREATED);
-        }catch (RegraNegocioException e){
+        }catch (RegraNegocioException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity atualizar(@PathVariable("/id") long id, @RequestBody CampeonatoDto dto){
-        if(!service.getById(id).isPresent()){
+    @ApiOperation("Editar um campeonato")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Campeonato editado com sucesso"),
+            @ApiResponse(code = 404, message = "Campeonato não encontrado"),
+            @ApiResponse(code = 400, message = "Erro ao salvar um campeonato")
+    })
+    public ResponseEntity atualizar(@PathVariable("id") long id, @RequestBody CampeonatoDto dto){
+        if(!service.getCampeonatoById(id).isPresent()){
             return new ResponseEntity("Campeonato não encontrado", HttpStatus.NOT_FOUND);
         }
-        try {
+        try{
             Campeonato campeonato = converter(dto);
             campeonato.setId(id);
-            service.create(campeonato);
+            service.salvar(campeonato);
             return ResponseEntity.ok(campeonato);
-        } catch (RegraNegocioException e){
+        }catch (RegraNegocioException e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
     @DeleteMapping("/{id}")
+    @ApiOperation("Deletar um campeonato")
+    @ApiResponses({
+            @ApiResponse(code = 204, message = "Campeonato deletado com sucesso"),
+            @ApiResponse(code = 404, message = "Campeonato não encontrado"),
+            @ApiResponse(code = 400, message = "Erro ao deletar um campeonato")
+    })
     public ResponseEntity excluir(@PathVariable("id") Long id){
-        Optional<Campeonato> campeonato = service.getById(id);
+        Optional<Campeonato> campeonato = service.getCampeonatoById(id);
         if(!campeonato.isPresent()){
             return new ResponseEntity("Campeonato não encontrado", HttpStatus.NOT_FOUND);
         }
         try {
-            service.delete(campeonato.get());
+            service.excluir(campeonato.get());
             return new ResponseEntity(HttpStatus.NO_CONTENT);
         } catch (RegraNegocioException e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
-    private Campeonato converter(CampeonatoDto dto){
+    public Campeonato converter(CampeonatoDto dto) {
         ModelMapper modelMapper = new ModelMapper();
         Campeonato campeonato = modelMapper.map(dto, Campeonato.class);
         return campeonato;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

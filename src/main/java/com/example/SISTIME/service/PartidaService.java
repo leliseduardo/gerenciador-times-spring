@@ -1,63 +1,51 @@
 package com.example.SISTIME.service;
 
+import com.example.SISTIME.exception.RegraNegocioException;
 import com.example.SISTIME.model.entity.Partida;
 import com.example.SISTIME.model.repository.PartidaRepository;
-import jakarta.transaction.Transactional;
-import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
 public class PartidaService {
 
-    @Autowired
     private PartidaRepository repository;
 
-    public List<Partida> getPartida(){
+    public PartidaService(PartidaRepository repository){
+        this.repository = repository;
+    }
+
+    public List<Partida> getPartida() {
         return repository.findAll();
     }
 
-    public Optional<Partida> getPartidaById(long id){
+    public Optional<Partida> getPartidaById (Long id) {
         return repository.findById(id);
     }
 
     @Transactional
-    public Partida create(@Valid Partida partida){
+    public Partida salvar(Partida partida) {
+        validar(partida);
         return repository.save(partida);
     }
 
     @Transactional
-    public void delete(Partida partida){
+    public void excluir(Partida partida) {
+        Objects.requireNonNull(partida.getId());
         repository.delete(partida);
     }
+
+    public void validar(Partida partida) {
+        if (partida.getCampeonato() == null || partida.getCampeonato().getId() == null || partida.getCampeonato().getId() == 0) {
+            throw new RegraNegocioException("Campeonato inválido");
+        }
+
+        if (partida.getEstadio() == null || partida.getEstadio().getId() == null || partida.getEstadio().getId() == 0) {
+            throw new RegraNegocioException("Estadio inválido");
+        }
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

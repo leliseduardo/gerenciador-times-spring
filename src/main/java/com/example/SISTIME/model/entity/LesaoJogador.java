@@ -1,26 +1,26 @@
 package com.example.SISTIME.model.entity;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ManyToAny;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
+import javax.persistence.*;
+import java.time.LocalDate;
+
 @Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class LesaoJogador {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
-    @NotNull
+    private Long id;
+    private LocalDate dataLesao;
     @ManyToOne
     private Jogador jogador;
-    @NotNull
     @ManyToOne
     private Lesao lesao;
+    @ManyToOne
+    private Medico medicoResponsavel;
 }

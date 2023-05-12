@@ -1,32 +1,34 @@
 package com.example.SISTIME.model.entity;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Entity
-public class ScoutsPartida {
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
 
+@Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class ScoutPartida {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
+    private Long id;
     @PositiveOrZero
-    private int posseDeBola;
+    private float posseDeBola;
     @PositiveOrZero
     private int impedimentos;
     @PositiveOrZero
     private int cruzamentos;
     @PositiveOrZero
     private int escanteios;
-
+    @PositiveOrZero
+    private Integer gols;
+    @PositiveOrZero
+    private Integer golsTimeAdversario;
     @NotNull
-    @ManyToOne
+    @OneToOne
     private Partida partida;
 }

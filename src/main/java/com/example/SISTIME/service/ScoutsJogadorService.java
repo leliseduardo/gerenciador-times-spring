@@ -1,12 +1,12 @@
 package com.example.SISTIME.service;
 
-import com.example.SISTIME.model.entity.ScoutsJogador;
-import com.example.SISTIME.model.repository.ScoutsJogadorRepository;
-import jakarta.transaction.Transactional;
-import jakarta.validation.Valid;
+import com.example.SISTIME.model.entity.ScoutJogador;
+import com.example.SISTIME.model.repository.ScoutJogadorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,42 +14,23 @@ import java.util.Optional;
 public class ScoutsJogadorService {
 
     @Autowired
-    private ScoutsJogadorRepository repository;
+    private ScoutJogadorRepository repository;
 
-    public List<ScoutsJogador> getScoutsJogador(){
+    public List<ScoutJogador> getScoutsJogador(){
         return repository.findAll();
     }
 
-    public Optional<ScoutsJogador> getScoutsJogadorById(long id){
+    public Optional<ScoutJogador> getScoutsJogadorById(long id){
         return repository.findById(id);
     }
 
     @Transactional
-    public ScoutsJogador create(@Valid ScoutsJogador scoutsJogador){
-        return repository.save(scoutsJogador);
+    public ScoutJogador salvar(@Valid ScoutJogador scoutJogador){
+        return repository.save(scoutJogador);
     }
 
     @Transactional
-    public void delete(ScoutsJogador scoutsJogador){
-        repository.delete(scoutsJogador);
+    public void excluir(ScoutJogador scoutJogador){
+        repository.delete(scoutJogador);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

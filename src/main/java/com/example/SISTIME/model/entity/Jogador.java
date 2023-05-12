@@ -1,22 +1,34 @@
 package com.example.SISTIME.model.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Jogador extends Pessoa{
 
-    @NotBlank
-    private String nacionalidade;
-    @PositiveOrZero
-    private float altura;
-    @PositiveOrZero
-    private float peso;
+    private Float altura;
+    private Float peso;
+    @ManyToMany
+    @JoinTable(
+            name = "posicao_jogador",
+            joinColumns = @JoinColumn(name = "jogador_id"),
+            inverseJoinColumns = @JoinColumn(name = "posicao_id")
+    )
+    private List<Posicao> posicoes = new ArrayList<Posicao>();
+
+    public List<Long> getIdPosicoes(){
+        return posicoes.stream().map(posicao -> { return posicao.getId();}).collect(Collectors.toList());
+    }
 }

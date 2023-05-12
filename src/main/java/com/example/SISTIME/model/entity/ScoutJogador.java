@@ -1,22 +1,22 @@
 package com.example.SISTIME.model.entity;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
+
 @Entity
-public class ScoutsJogador {
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class ScoutJogador {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
+    private Long id;
     @PositiveOrZero
     private int desarmes;
     @PositiveOrZero
@@ -25,8 +25,8 @@ public class ScoutsJogador {
     private int golContra;
     @PositiveOrZero
     private int cartaoAmarelo;
-    @PositiveOrZero
-    private int cartaoVermelho;
+    @NotNull
+    private boolean cartaoVermelho;
     @PositiveOrZero
     private int faltaSofrida;
     @PositiveOrZero
@@ -57,31 +57,11 @@ public class ScoutsJogador {
     private int defesaPenalti;
     @PositiveOrZero
     private int golSofrido;
-
     @NotNull
-    @ManyToOne
-    private Jogador jogador;
+    @OneToOne
+    private Relacionado relacaoPartidaJogador;
 
-    @NotNull
-    @ManyToOne
-    private Partida partida;
+
+
+    // getters and setters
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

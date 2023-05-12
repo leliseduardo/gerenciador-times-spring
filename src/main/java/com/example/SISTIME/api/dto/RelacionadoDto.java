@@ -6,20 +6,19 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
 
-import java.time.LocalDate;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class LesaoJogadorDto {
+public class RelacionadoDto {
     private Long id;
-    private LocalDate dataLesao;
+    private Boolean titular;
+    private String saiu;
+    private String entrou;
+    private Long partidaId;
     private Long jogadorId;
-    private Long lesaoId;
-    private Long medicoResponsavelId;
 
-    public static LesaoJogadorDto create(LesaoJogador lesaoJogador) {
+    public static RelacionadoDto create(Relacionado relacionado) {
         ModelMapper modelMapper = new ModelMapper();
-        return modelMapper.map(lesaoJogador, LesaoJogadorDto.class);
+        return modelMapper.map(relacionado, RelacionadoDto.class);
     }
 }

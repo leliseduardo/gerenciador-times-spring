@@ -4,6 +4,10 @@ import com.example.SISTIME.api.dto.PartidaDto;
 import com.example.SISTIME.exception.RegraNegocioException;
 import com.example.SISTIME.model.entity.Partida;
 import com.example.SISTIME.service.PartidaService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -17,20 +21,30 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/v1/partidas")
 @RequiredArgsConstructor
+@Api(tags="API de Partidas")
 public class PartidaController {
     private final PartidaService service;
 
-    @GetMapping
-    public ResponseEntity get(){
+    @GetMapping()
+    @ApiOperation("Obter todos as partidas")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Partidas encontradas")
+    })
+    public ResponseEntity get() {
         List<Partida> partidas = service.getPartida();
         return ResponseEntity.ok(partidas.stream().map(PartidaDto::create).collect(Collectors.toList()));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity getById(@PathVariable long id){
+    @ApiOperation("Obter detalhes de uma partida")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Partida encontrada"),
+            @ApiResponse(code = 404, message = "Partida não encontrada")
+    })
+    public ResponseEntity get(@PathVariable("id") Long id) {
         Optional<Partida> partida = service.getPartidaById(id);
 
-        if(!partida.isPresent()){
+        if (!partida.isPresent()) {
             return new ResponseEntity("Partida não encontrada", HttpStatus.NOT_FOUND);
         }
 
@@ -38,66 +52,66 @@ public class PartidaController {
     }
 
     @PostMapping()
-    public ResponseEntity post(@RequestBody PartidaDto dto){
+    @ApiOperation("Salvar uma nova partida")
+    @ApiResponses({
+            @ApiResponse(code = 201, message = "Partida salva com sucesso"),
+            @ApiResponse(code = 400, message = "Erro ao salvar uma partida")
+    })
+    public ResponseEntity post(@RequestBody PartidaDto dto) {
         try {
             Partida partida = converter(dto);
-            partida = service.create(partida);
+            partida = service.salvar(partida);
             return new ResponseEntity(partida, HttpStatus.CREATED);
-        } catch (RegraNegocioException e){
+        } catch (RegraNegocioException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-
     @PutMapping("/{id}")
-    public ResponseEntity atualizar(@PathVariable("id") long id, @RequestBody PartidaDto dto){
+    @ApiOperation("Atualizar uma partida")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Partida salva com sucesso"),
+            @ApiResponse(code = 404, message = "Partida não encontrada"),
+            @ApiResponse(code = 400, message = "Erro ao salvar a partida")
+    })
+    public ResponseEntity atualizar(@PathVariable("id") Long id, @RequestBody PartidaDto dto){
         if(!service.getPartidaById(id).isPresent()){
             return new ResponseEntity("Partida não encontrada", HttpStatus.NOT_FOUND);
         }
         try {
             Partida partida = converter(dto);
             partida.setId(id);
-            service.create(partida);
+            service.salvar(partida);
             return ResponseEntity.ok(partida);
         } catch (RegraNegocioException e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity excluir(@PathVariable("id") Long id){
+    @DeleteMapping("id")
+    @ApiOperation("Excluir uma partida")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Partida deletada com sucesso"),
+            @ApiResponse(code = 404, message = "Partida não encontrado"),
+            @ApiResponse(code = 400, message = "Erro ao deletar uma partida")
+    })
+    public ResponseEntity excluir(@PathVariable("id") long id) {
         Optional<Partida> partida = service.getPartidaById(id);
-        if(!partida.isPresent()){
-            return new ResponseEntity("Partida não encontrado", HttpStatus.NOT_FOUND);
+        if (!partida.isPresent()) {
+            return new ResponseEntity<>("Partida não encontrada", HttpStatus.NOT_FOUND);
         }
-        try{
-            service.delete(partida.get());
+        try {
+            service.excluir(partida.get());
             return new ResponseEntity(HttpStatus.NO_CONTENT);
-        }
-        catch (RegraNegocioException e){
+        } catch (RegraNegocioException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+
     }
 
-    private Partida converter(PartidaDto dto){
+    public Partida converter(PartidaDto dto) {
         ModelMapper modelMapper = new ModelMapper();
         Partida partida = modelMapper.map(dto, Partida.class);
         return partida;
     }
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -1,30 +1,26 @@
 package com.example.SISTIME.model.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Entity
-public class Posicao {
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
+@Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class Posicao {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
-    @NotBlank
+    private Long id;
     private String nome;
-    @NotBlank
     private String areaCampo;
-    @NotBlank
     private String ladoCampo;
-    @NotBlank
     private String sigla;
+    @ManyToMany(mappedBy = "posicoes")
+    private List<Jogador> jogadores = new ArrayList<Jogador>();
+
 }

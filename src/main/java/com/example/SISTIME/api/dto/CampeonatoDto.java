@@ -9,40 +9,18 @@ import org.modelmapper.ModelMapper;
 import java.time.LocalDate;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class CampeonatoDto {
-
-    private long id;
+@AllArgsConstructor
+public class  CampeonatoDto {
+    private Long id;
     private String nome;
     private LocalDate dataInicio;
     private LocalDate dataFim;
     private String campeao;
-    private long idTemporada;
+    private Long temporadaId;
 
-    public static CampeonatoDto create(Campeonato campeonato){
+    public static CampeonatoDto create(Campeonato campeonato) {
         ModelMapper modelMapper = new ModelMapper();
         return modelMapper.map(campeonato, CampeonatoDto.class);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

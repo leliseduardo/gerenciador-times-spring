@@ -1,22 +1,21 @@
 package com.example.SISTIME.api.dto;
 
-import com.example.SISTIME.model.entity.ScoutsJogador;
+import com.example.SISTIME.model.entity.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class ScoutsJogadorDto {
-
-    private long id;
+@AllArgsConstructor
+public class ScoutJogadorDto {
+    private Long id;
     private int desarmes;
     private int faltasCometidas;
     private int golContra;
     private int cartaoAmarelo;
-    private int cartaoVermelho;
+    private boolean cartaoVermelho;
     private int faltaSofrida;
     private int passeIncompleto;
     private int assistencia;
@@ -32,11 +31,10 @@ public class ScoutsJogadorDto {
     private int defesaDificil;
     private int defesaPenalti;
     private int golSofrido;
-    private long idJogador;
-    private long idPartida;
+    private Long relacaoPartidaJogadorId;
 
-    public static ScoutsJogadorDto create(ScoutsJogador scoutsJogador){
+    public static ScoutJogadorDto create(ScoutJogador scoutJogador) {
         ModelMapper modelMapper = new ModelMapper();
-        return modelMapper.map(scoutsJogador, ScoutsJogadorDto.class);
+        return modelMapper.map(scoutJogador, ScoutJogadorDto.class);
     }
 }
